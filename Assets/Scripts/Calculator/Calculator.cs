@@ -68,7 +68,8 @@ public class Calculator
     private void ButtonOnClicked(CalculatorButton calcButton, Label label)
     {
         if ((label.text == string.Empty || label.text.StartsWith(calcButton.Name)) && calcButton.Name == "0"
-               || label.text.Contains(calcButton.Name) && calcButton.Name == ",")
+           || (calcButton.Name == "," && ((_lastSymbolOpertaion!='\0' && label.text.Count(x=>x==',')==2)
+           ||(_lastSymbolOpertaion=='\0') && label.text.Contains(calcButton.Name) || label.text == string.Empty)))
             return;
 
         if (calcButton is IResultButton resultButton)
@@ -89,7 +90,7 @@ public class Calculator
             IOperation operation = GetOperation(_lastSymbolOpertaion);
             string result = resultButton.Result(numOne, numTwo, operation);
             resultButton.Print(label, result);
-
+            _lastSymbolOpertaion = '\0';
             return;
 
         }

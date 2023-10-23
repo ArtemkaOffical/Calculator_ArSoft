@@ -26,19 +26,17 @@
 }
 
 .button--number {
-
-    background-color: #1e1e1e;
+    
     color: white;
 }
 
 .button--action {
-
-    background-color: #1e1e1e;
-    color: #21a121;
+    
+    color: rgb(33, 161, 33);
 }
 
 Button.button--result {
-    background-color: #21a121;
+    background-color: rgb(33, 161, 33);
     width: 690px;
 }
 
@@ -52,7 +50,13 @@ Button.button--result {
     align-items: center;
     font-size: 150px;
     border-width: 2px;
-    border-color: #1e1e1e;
+    border-color: rgb(30, 30, 30);
+    background-color: rgb(30, 30, 30);
+}
+
+.button:hover {
+    background-color: rgb(42, 42, 42);
+    font-size: 170px;
 }
 
 .output--field {
