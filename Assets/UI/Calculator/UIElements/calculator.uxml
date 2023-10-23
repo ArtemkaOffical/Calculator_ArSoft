@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Calculator/Styles/calculator.uss?fileID=7433441132597879392&amp;guid=30a5d1e46119c5044a7271f41db603cc&amp;type=3#calculator" />
+    <ui:VisualElement name="output">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="outputField" style="flex-basis: 100%;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="buttons" />
+</ui:UXML>

@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="calculator" src="project://database/Assets/UI/Calculator/calculator.uxml?fileID=9197481963319205126&amp;guid=b6f35be2a4f5fe34685a746c4e57e3d5&amp;type=3#calculator" />
+    <Style src="project://database/Assets/UI/container.uss?fileID=7433441132597879392&amp;guid=8ecfa5b940585f648adf69489cd481c4&amp;type=3#container" />
+    <ui:VisualElement name="canvas">
+        <ui:Instance template="calculator" name="calculator" />
+    </ui:VisualElement>
+</ui:UXML>
