@@ -1,8 +1,9 @@
 ﻿namespace DefaultNamespace
 {
-    public class PersentOperation: IOperation
+    public class PersentOperation: BaseOperation
     {
-        public string Operation(float x, float y)
+        public override char SymbolOfOperation { get; protected set; } = '%';
+        public override string Operation(float x, float y)
         {
             return (x / 100).ToString();
         }

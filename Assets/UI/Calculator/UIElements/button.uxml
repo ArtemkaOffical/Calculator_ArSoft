@@ -1,5 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="canvas">
-        <ui:Button text="Button" display-tooltip-when-elided="true" name="button" />
+    <Style src="project://database/Assets/UI/Calculator/Styles/calculator.uss?fileID=7433441132597879392&amp;guid=30a5d1e46119c5044a7271f41db603cc&amp;type=3#calculator" />
+    <Style src="project://database/Assets/UI/container.uss?fileID=7433441132597879392&amp;guid=8ecfa5b940585f648adf69489cd481c4&amp;type=3#container" />
+    <ui:VisualElement name="canvas" class="container">
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="button" class="button--text" />
     </ui:VisualElement>
 </ui:UXML>

@@ -3,16 +3,12 @@ using UnityEngine.UIElements;
 
 public class Bootstrap : MonoBehaviour
 {
-    [SerializeField] private UIDocument _mainCanvas;
-    [SerializeField] private VisualTreeAsset _button;
-    
+    [SerializeField] private UIDocument _canvas;
     
     void Start()
     {
-        UI ui = new UI();
         Calculator calculator = new Calculator();
-        ui.Initialization(_mainCanvas);
-        calculator.Initialization(ui,_button);
+        calculator.Initialization(_canvas);
     }
 
 }

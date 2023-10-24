@@ -1,8 +1,9 @@
 ﻿namespace DefaultNamespace
 {
-    public class ClearOperation : IOperation
+    public class ClearOperation : BaseOperation
     {
-        public string Operation(float x, float y)
+        public override char SymbolOfOperation { get; protected set; } = 'C';
+        public override string Operation(float x, float y)
         {
             return string.Empty;
         }

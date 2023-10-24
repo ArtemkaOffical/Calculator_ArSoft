@@ -378,5 +378,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e2c63a1fa3fc44594da7c94416bf01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 1859087119}
-  _button: {fileID: 9197481963319205126, guid: 6f16bc57675d8874c8a3009dad2dd8b3, type: 3}
+  _canvas: {fileID: 1859087119}

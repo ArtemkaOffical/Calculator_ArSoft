@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
@@ -7,74 +6,70 @@ using UnityEngine.UIElements;
 public class Calculator
 {
     private char _lastSymbolOpertaion;
-    private readonly string[] _buttonsAction = { "+", "-", "/", "*", "%", "C" };
+
+    private readonly BaseOperation[] _operations =
+    {
+        new AddOperation(), new MultiOperation(), new SubOperation(),
+        new DivisionOperation(), new ClearOperation(), new PersentOperation()
+    };
 
     private readonly List<CalculatorButton> _buttons = new List<CalculatorButton>()
-   {
-      new CalculatorButtonResult("C"),
-      new CalculatorButtonNumber(","),
-      new CalculatorButtonResult("%"),
-      new CalculatorButtonAction("/"),
-      new CalculatorButtonNumber("7"),
-      new CalculatorButtonNumber("8"),
-      new CalculatorButtonNumber("9"),
-      new CalculatorButtonAction("*"),
-      new CalculatorButtonNumber("4"),
-      new CalculatorButtonNumber("5"),
-      new CalculatorButtonNumber("6"),
-      new CalculatorButtonAction("-"),
-      new CalculatorButtonNumber("1"),
-      new CalculatorButtonNumber("2"),
-      new CalculatorButtonNumber("3"),
-      new CalculatorButtonAction("+"),
-      new CalculatorButtonNumber("0"),
-      new CalculatorButtonResult("="),
-   };
-
-    public void Initialization(UI ui, VisualTreeAsset buttonAsset)
     {
+        new CalculatorButtonResult("C"),
+        new CalculatorButtonNumber(","),
+        new CalculatorButtonResult("%"),
+        new CalculatorButtonAction("/"),
+        new CalculatorButtonNumber("7"),
+        new CalculatorButtonNumber("8"),
+        new CalculatorButtonNumber("9"),
+        new CalculatorButtonAction("*"),
+        new CalculatorButtonNumber("4"),
+        new CalculatorButtonNumber("5"),
+        new CalculatorButtonNumber("6"),
+        new CalculatorButtonAction("-"),
+        new CalculatorButtonNumber("1"),
+        new CalculatorButtonNumber("2"),
+        new CalculatorButtonNumber("3"),
+        new CalculatorButtonAction("+"),
+        new CalculatorButtonNumber("0"),
+        new CalculatorButtonResult("="),
+    };
 
-        int j = 1;
-        for (int i = 0; i < _buttons.Count; i++)
+    public void Initialization(UIDocument canvas)
+    {
+        var containerOfButtons = canvas.rootVisualElement.Q("buttons");
+        var output = canvas.rootVisualElement.Q<Label>("outputField");
+        int index = 0;
+        RecursiveButtonBinding(containerOfButtons, output, ref index);
+    }
+
+    private void RecursiveButtonBinding(VisualElement containerOfButtons, Label label, ref int index)
+    {
+        foreach (var row in containerOfButtons.Children())
         {
 
-            var calcButton = _buttons[i];
-            var button = buttonAsset.Instantiate().Q<Button>("button");
+            if (row.Children().Count() != 0)
+                RecursiveButtonBinding(row, label, ref index);
 
-            button.AddToClassList("button");
-            button.AddToClassList(_buttonsAction.Contains(calcButton.Name) ? "button--action" : "button--number");
-            if (calcButton.Name == "=")
-                button.AddToClassList("button--result");
-
-            button.text = calcButton.Name;
-            button.clicked += () => ButtonOnClicked(calcButton, ui.Output);
-
-            ui.RowOfButtons.contentContainer.Add(button);
-
-            if (j == 4)
-            {
-                ui.ContainerOfButtons.contentContainer.Add(ui.RowOfButtons);
-                ui.RowOfButtons = new VisualElement();
-                ui.RowOfButtons.AddToClassList("buttons--row");
-                j = 0;
-            }
-
-            j++;
-
+            if (row is not Button uiButton) continue;
+            var button = _buttons[index];
+            uiButton.AddToClassList(button is IActionButton ? "button--action" : "button--number");
+            uiButton.text = button.Name;
+            uiButton.clicked += () => ButtonOnClicked(button, label);
+            index++;
         }
-        ui.ContainerOfButtons.contentContainer.Add(ui.RowOfButtons);
     }
 
     private void ButtonOnClicked(CalculatorButton calcButton, Label label)
     {
         if ((label.text == string.Empty || label.text.StartsWith(calcButton.Name)) && calcButton.Name == "0"
-           || (calcButton.Name == "," && ((_lastSymbolOpertaion!='\0' && label.text.Count(x=>x==',')==2)
-           ||(_lastSymbolOpertaion=='\0') && label.text.Contains(calcButton.Name) || label.text == string.Empty)))
+            || (calcButton.Name == "," && ((_lastSymbolOpertaion != '\0' && label.text.Count(x => x == ',') == 2)
+                                           || (_lastSymbolOpertaion == '\0') && label.text.Contains(calcButton.Name) ||
+                                           label.text == string.Empty)))
             return;
 
         if (calcButton is IResultButton resultButton)
         {
-
             if (calcButton.Name != "=")
                 _lastSymbolOpertaion = resultButton.GetSymbolOperation();
 
@@ -87,10 +82,13 @@ public class Calculator
             if (textValue.Length > 1 && float.TryParse(textValue[1], out float parsedNumTwo))
                 numTwo = parsedNumTwo;
 
-            IOperation operation = GetOperation(_lastSymbolOpertaion);
+            if (!TryGetOperation(_lastSymbolOpertaion, out IOperation operation))
+                return;
+
             string result = resultButton.Result(numOne, numTwo, operation);
             resultButton.Print(label, result);
             _lastSymbolOpertaion = '\0';
+
             return;
 
         }
@@ -102,29 +100,11 @@ public class Calculator
 
     }
 
-    private IOperation GetOperation(char lastOp)
+    private bool TryGetOperation(char lastOp, out IOperation operation)
     {
+        operation = _operations.FirstOrDefault(x => x.SymbolOfOperation == lastOp);
 
-        switch (lastOp)
-        {
-
-            case '*':
-                return new MultiOperation();
-            case '-':
-                return new SubOperation();
-            case '+':
-                return new AddOperation();
-            case '/':
-                return new DivisionOperation();
-            case '%':
-                return new PersentOperation();
-            case 'C':
-                return new ClearOperation();
-            default:
-                throw new Exception("operation not found");
-
-        }
-
+        return operation != null;
     }
 
 }
