@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
@@ -37,8 +38,8 @@ public class Calculator
 
     public void Initialization(UIDocument canvas)
     {
-        var containerOfButtons = canvas.rootVisualElement.Q("buttons");
-        var output = canvas.rootVisualElement.Q<Label>("outputField");
+        var containerOfButtons = canvas.rootVisualElement.Q("Buttons");
+        var output = canvas.rootVisualElement.Q<Label>("OutputField");
         int index = 0;
         RecursiveButtonBinding(containerOfButtons, output, ref index);
     }
@@ -51,11 +52,11 @@ public class Calculator
             if (row.Children().Count() != 0)
                 RecursiveButtonBinding(row, label, ref index);
 
-            if (row is not Button uiButton) continue;
+            if (row is not Label uiButton) continue;
             var button = _buttons[index];
             uiButton.AddToClassList(button is IActionButton ? "button--action" : "button--number");
             uiButton.text = button.Name;
-            uiButton.clicked += () => ButtonOnClicked(button, label);
+            uiButton.RegisterCallback<ClickEvent>((callback)=>ButtonOnClicked(button, label));
             index++;
         }
     }
@@ -83,7 +84,7 @@ public class Calculator
                 numTwo = parsedNumTwo;
 
             if (!TryGetOperation(_lastSymbolOpertaion, out IOperation operation))
-                return;
+                throw new Exception("operation not found");
 
             string result = resultButton.Result(numOne, numTwo, operation);
             resultButton.Print(label, result);
